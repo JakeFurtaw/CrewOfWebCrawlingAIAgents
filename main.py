@@ -2,6 +2,11 @@ from crewai import Crew
 from crewai.process import Process
 from agents import Questions_crawler, Answer_crawler, Get_example_data, Manager
 from tasks import Questions_crawler_task, Answer_crawler_task, Get_example_data , Manager_task
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
 
 print("Starting the project...")
 website_link = input("Enter the website link: ")
