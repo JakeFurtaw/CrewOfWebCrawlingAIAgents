@@ -8,16 +8,16 @@ directory_tool = DirectoryReadTool()
 
 # Define the agents that will be used in the project
 class Agents():
-    # Manager = Agent(
-    #     name = "Manager",
-    #     role = "Project Manager",
-    #     backstory = """You are an agent that specializes in crawling college websites and coming up with questions that new and existing students would 
-    #     have about the school. You are tasked with crawling the website and coming up with questions that new and existing students would have about the school.
-    #     """,
-    #     description = "An Agent that manages the team and the project.",
-    #     allow_delegation = True,
-    #     tools = [],
-    # )
+    Manager = Agent(
+        name = "Manager",
+        role = "Project Manager",
+        backstory = """You are an agent that specializes in crawling college websites and coming up with questions that new and existing students would 
+        have about the school. You are tasked with crawling the website and coming up with questions that new and existing students would have about the school.
+        """,
+        description = "An Agent that manages the team and the project.",
+        allow_delegation = True,
+        tools = [],
+    )
 
     Data_Loader = Agent(
         role = "Data Loader",
