@@ -1,5 +1,4 @@
 from Crew import DataCrawlingCrew
-from utils import get_website_link
 
 def run():
     DataCrawlingCrew().crew().kickoff()

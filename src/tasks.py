@@ -14,18 +14,12 @@ class Tasks():
         expected_output = "Example data that can be used to help the llm find data on the website provided.",
         agent = Data_Loader
     )
-
-    Load_Data = Task(
-        description = "Load the data that was collected by the Question_Crawler so the Answer_Crawler can find the answers to the questions.",
-        expected_output = "The data that was collected by the data loader agent.",
-        agent = Data_Loader
-    )
     
     QA_Crawl = Task(
         description = """Look through the provided text file to come up with questions and answers to those questions that students would have about the school.
         This could include gerneral information about the school, the programs offered, the campus life, different majors, food offered on campus, building and facility 
         locations, fraternity and sorority information, club information, teacher and faculty information.""",
-        expected_output = "A list of questions that students would have about the school.",
+        expected_output = "A list of questions and answers that students would have about the school.",
         agent = QA_Crawler
     )
 

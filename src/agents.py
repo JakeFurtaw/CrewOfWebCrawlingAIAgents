@@ -10,8 +10,8 @@ EMBEDDING_MODEL = "BAAI/bge-large-en-v1.5"
 embedder = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
 
 # ------Define the tools that will be used in the project---------
-input_data = FileReadTool("./Data/input.txt")
-questions_data = FileReadTool("./Data/questions.txt")
+example_data = FileReadTool("./Data/examples.txt")
+data = FileReadTool("./Data/cleaned_docs.txt")
 output_data = FileReadTool("./Data/output.txt")
 
 # ------Define the agents that will be used in the project------
@@ -29,13 +29,12 @@ class Agents():
 
     Data_Loader = Agent(
         role = "Data Loader",
-        goal="""To use the file tool to read files to get example data that can be used to test the project. As well as use the file tool to load the data 
-        that the other agents have generated to provide to the next agent.""",
-        backstory = """You are an agent that specializes using the file tool and directory tool. Use these tools to read files and directories to get 
-        the example data that can be used to help the other agents understand what to look for on the website.
-        You will also use these tools to load the data that the other agents have found and saved to provide to the next agent.""",
+        goal="To load the example data that the question and answer crawler agent will use to come up with questions that students would have about the school.",
+        backstory = """You are an agent that specializes in loading data that the question and answer crawler agent will use to come up with questions that students would have about the school.
+        You are tasked with loading the example data that the question and answer crawler agent will use to come up with questions that students would have about the school.
+        """,
         verbose = True,
-        tools = [input_data],
+        tools = [example_data],
         allow_delegation = False,
     )
 
@@ -48,9 +47,22 @@ class Agents():
         locations, fraternity and sorority information, club information, teacher and faculty information.
         """,
         verbose = True,
-        tools = [questions_data],
+        tools = [data],
         allow_delegation = False,
     )
+
+    # QA_Crawler2 = Agent(
+    #     role = "Research Analyst",
+    #     goal="To look through the provided file and come up with questions that students would have about the school.",
+    #     backstory = """You are an agent that specializes in analying data and coming up with questions and answers to those questions that new and existing students would 
+    #     have about the school. You are tasked with crawling the website and coming up with questions that new and existing students would have about the school.
+    #     This could include but isnt limited to gerneral information about the school, the programs offered, the campus life, different majors, food offered on campus, building and facility 
+    #     locations, fraternity and sorority information, club information, teacher and faculty information.
+    #     """,
+    #     verbose = True,
+    #     tools = [data],
+    #     allow_delegation = False,
+    # )
 
     Data_Formatter = Agent(
         role = "Data Formatter",
