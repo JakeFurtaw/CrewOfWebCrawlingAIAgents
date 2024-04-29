@@ -1,5 +1,5 @@
 from crewai import Task
-from agents import Question_crawler, Answer_crawler, Get_example_data, Manager
+from agents import Question_crawler, Answer_crawler, Get_example_data, Data_formatter, Manager
 from main import website_link
 
 # Define the tasks that will be used in the project
@@ -28,4 +28,12 @@ class Tasks():
         description = "Crawl the provided website {website_link} and all of its sublinks to come up with answers to the questions that the question crawler agent came up with.",
         expected_output = "A list of answers to the questions that the question crawler agent came up with.",
         agent = Answer_crawler
+    )
+
+    Data_formatter = Task(
+        description = """Format the data that was collected by the question and answer crawler agents so that it can be used to create a datset to finetune a model.
+        Format it so that you have a Question on one line and the answer on the next line.
+        """,
+        expected_output = "Formatted data that can be used to create a chatbot.",
+        agent = Data_formatter
     )
