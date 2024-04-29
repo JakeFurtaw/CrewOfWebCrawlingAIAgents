@@ -4,11 +4,11 @@ from main import website_link
 
 # Define the tasks that will be used in the project
 class Tasks(website_link):
-    Manage_Agents = Task(
-        description = "Manage the team of agents and provide tasks to each agent that will help further guide the project to sucess.",
-        expected_output = "A well managed team and project.",
-        agent = Manager
-    )
+    # Manage_Agents = Task(
+    #     description = "Manage the team of agents and provide tasks to each agent that will help further guide the project to sucess.",
+    #     expected_output = "A well managed team and project.",
+    #     agent = Manager
+    # )
 
     Load_Example_Data = Task(
         description = "Read files and directories to get example data that can be used to provide the agents with the kind of data they are looking to complete the project.",

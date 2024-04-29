@@ -1,23 +1,43 @@
 from crewai import Agent
-from crewai_tools import SerperDevTool, WebsiteSearchTool, FileReadTool, DirectoryReadTool
+from crewai_tools import WebsiteSearchTool, FileReadTool
+from langchain_community.llms import HuggingFaceHub
+from main import website_link
+from dotenv import load_dotenv
+import os
+load_dotenv()
+HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
+llm = HuggingFaceHub(
+    repo_id = "meta-llama/Meta-Llama-3-8B",
+    huggingfacehub_api_key = HUGGINGFACE_API_KEY,
+    task = "web-crawling"
+)
+embedder = HuggingFaceHub(
+    repo_id = "BAAI/bge-large-en-v1.5",
+    huggingfacehub_api_key = HUGGINGFACE_API_KEY
+)
 
-search_tool = WebsiteSearchTool()
-serper_tool = SerperDevTool()
-file_tool = FileReadTool()
-directory_tool = DirectoryReadTool()
-
-# Define the agents that will be used in the project
-class Agents():
-    Manager = Agent(
-        name = "Manager",
-        role = "Project Manager",
-        backstory = """You are an agent that specializes in crawling college websites and coming up with questions that new and existing students would 
-        have about the school. You are tasked with crawling the website and coming up with questions that new and existing students would have about the school.
-        """,
-        description = "An Agent that manages the team and the project.",
-        allow_delegation = True,
-        tools = [],
+# ------Define the tools that will be used in the project---------
+search_tool = WebsiteSearchTool( website= website_link,
+    config = dict(
+        llm = llm(temperature = 0.9, max_new_tokens = 256),
+        embedder = embedder
     )
+)
+input_data = FileReadTool("./Data/input.txt")
+output_data = FileReadTool("./Data/output.txt")
+
+# ------Define the agents that will be used in the project------
+class Agents():
+    # Manager = Agent(
+    #     name = "Manager",
+    #     role = "Project Manager",
+    #     backstory = """You are an agent that specializes in crawling college websites and coming up with questions that new and existing students would 
+    #     have about the school. You are tasked with crawling the website and coming up with questions that new and existing students would have about the school.
+    #     """,
+    #     description = "An Agent that manages the team and the project.",
+    #     allow_delegation = True,
+    #     tools = [],
+    # )
 
     Data_Loader = Agent(
         role = "Data Loader",
@@ -27,7 +47,7 @@ class Agents():
         the example data that can be used to help the other agents understand what to look for on the website.
         You will also use these tools to load the data that the other agents have found and saved to provide to the next agent.""",
         verbose = True,
-        tools = [file_tool, directory_tool],
+        tools = [input_data],
         allow_delegation = False,
     )
 
@@ -40,7 +60,7 @@ class Agents():
         locations, fraternity and sorority information, club information, teacher and faculty information.
         """,
         verbose = True,
-        tools = [serper_tool, search_tool],
+        tools = [search_tool],
         allow_delegation = False,
     )
 
@@ -53,7 +73,7 @@ class Agents():
         locations, fraternity and sorority information, club information, teacher and faculty information.
         """,
         verbose = True,
-        tools = [serper_tool, search_tool],
+        tools = [search_tool],
         allow_delegation = False,
     )
 
@@ -64,7 +84,7 @@ class Agents():
         the data that the question and answer crawler agent came up with in a way that is easy to read and understand for a human. 
         You are to export the data to a text file that can be read by a human.""",
         verbose = True,
-        tools = [file_tool, directory_tool],
+        tools = [output_data],
         allow_delegation = False,
     )
 
