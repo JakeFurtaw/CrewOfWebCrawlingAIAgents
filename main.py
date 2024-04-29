@@ -11,6 +11,7 @@ crew = Crew(
     agents=[Questions_crawler, Answer_crawler, Get_example_data],
     tasks=[Questions_crawler_task, Answer_crawler_task, Get_example_data],
     process=Process.sequential,
+    max_rpm=10,
     verbose=2
 )
 print("Kicking off project.")
