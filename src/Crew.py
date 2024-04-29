@@ -1,8 +1,8 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from agents import Data_Loader, Questions_Crawler, Answer_Crawler, Data_Formatter, Manager
-from tasks import Load_Example_Data, Load_Data, Question_Crawl, Answer_Crawl, Format_Output_Data, Manager_Agents
-from transformers import AutoModelForCausalLM
+from agents import Data_Loader, QA_Crawler, Data_Formatter, Manager
+from tasks import Load_Example_Data, Load_Data, QA_Crawl, Format_Output_Data, Manager_Agents
+from transformers import AutoModelForCausalLM, GenerationConfig
 from dotenv import load_dotenv
 import os
 import torch
@@ -14,10 +14,12 @@ HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
 llm = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", device_map = {"auto": device})
 
 @CrewBase
-class WebCrawlingCrew():
+class DataCrawlingCrew():
     def __init__(self) -> None:
-        self.llm = llm()
-        
+        self.llm = llm
+        self.generation_config = GenerationConfig(
+            temperature=0.9,
+            max_new_tokens=100)
 
     #Agents for the project.
     @agent
@@ -27,17 +29,12 @@ class WebCrawlingCrew():
             llm = self.llm
         )
     @agent
-    def Questions_Crawler(self) -> Agent:
+    def QA_Crawler(self) -> Agent:
         return Agent(
-            config = Questions_Crawler,
+            config = QA_Crawler,
             llm = self.llm
         )
-    @agent
-    def Answer_Crawler(self) -> Agent:
-        return Agent(
-            config = Answer_Crawler,
-            llm = self.llm
-        )
+
     @agent
     def Data_Formatter(self) -> Agent:
         return Agent(
@@ -59,16 +56,10 @@ class WebCrawlingCrew():
             agent = self.Data_Loader()
         )
     @task
-    def Question_Crawl(self) -> Task:
+    def QA_Crawl(self) -> Task:
         return Task(
-            config = Question_Crawl,
-            agent = self.Questions_Crawler()
-        )
-    @task
-    def Answer_Crawl(self) -> Task:
-        return Task(
-            config = Answer_Crawl,
-            agent = self.Answer_Crawler()
+            config = QA_Crawler,
+            agent = self.QA_Crawler()
         )
     @task
     def Format_Output_Data(self) -> Task:
