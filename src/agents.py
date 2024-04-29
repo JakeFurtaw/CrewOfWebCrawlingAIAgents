@@ -9,11 +9,12 @@ import os
 
 load_dotenv()
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
+EMBEDDING_MODEL = "BAAI/bge-large-en-v1.5"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 llm = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", device_map = "auto")
-embedder = HuggingFaceEmbeddings(api_key=HUGGINGFACE_API_KEY)
+embedder = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
 
 # ------Define the tools that will be used in the project---------
 search_tool = WebsiteSearchTool( website=get_website_link(),
@@ -42,8 +43,8 @@ class Agents():
 
     Data_Loader = Agent(
         role = "Data Loader",
-        goal="""To use the file tool to read files and directory tool to read directories to get example data that can be used to test the project 
-        and data that the other agents have generated to provide to the next agent.""",
+        goal="""To use the file tool to read files to get example data that can be used to test the project. As well as use the file tool to load the data 
+        that the other agents have generated to provide to the next agent.""",
         backstory = """You are an agent that specializes using the file tool and directory tool. Use these tools to read files and directories to get 
         the example data that can be used to help the other agents understand what to look for on the website.
         You will also use these tools to load the data that the other agents have found and saved to provide to the next agent.""",

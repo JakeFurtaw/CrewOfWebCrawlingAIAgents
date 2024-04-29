@@ -11,7 +11,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 load_dotenv()
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
-llm = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", device_map = "auto")
+llm = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", device_map = {"auto": device})
 
 @CrewBase
 class WebCrawlingCrew():

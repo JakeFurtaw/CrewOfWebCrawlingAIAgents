@@ -1,9 +1,10 @@
 from crewai import Task
 from agents import Data_Loader, Question_Crawler, Answer_Crawler, Data_Formatter, Manager
-from main import website_link
+from utils import get_website_link
 
 # Define the tasks that will be used in the project
-class Tasks(website_link):
+class Tasks(get_website_link):
+    website_link = get_website_link()
     # Manage_Agents = Task(
     #     description = "Manage the team of agents and provide tasks to each agent that will help further guide the project to sucess.",
     #     expected_output = "A well managed team and project.",
