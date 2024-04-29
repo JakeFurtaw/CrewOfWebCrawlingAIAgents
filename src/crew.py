@@ -21,7 +21,6 @@ class WebCrawlingCrew():
         self.llm = llm(temperature = 0.9,
                        max_new_tokens = 256
     )
-
     #Agents for the project.
     @agent
     def Data_Loader(self) -> Agent:
@@ -81,7 +80,6 @@ class WebCrawlingCrew():
         )
     
     #Crew for the project.
-
     @crew
     def crew(self) -> Crew:
         return Crew(
