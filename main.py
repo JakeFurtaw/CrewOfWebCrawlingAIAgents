@@ -1,7 +1,7 @@
 from crewai import Crew
 from crewai.process import Process
-from agents import Questions_crawler, Answer_crawler, Get_example_data, Manager
-from tasks import Questions_crawler_task, Answer_crawler_task, Get_example_data , Manager_task
+from agents import Data_Loader, Questions_Crawler, Answer_Crawler, Data_Formatter, Manager
+from tasks import Load_Example_Data, Question_Crawl, Answer_Crawl, Format_Data, Manager_Agents
 from dotenv import load_dotenv
 import os
 
@@ -13,8 +13,8 @@ website_link = input("Enter the website link: ")
 
 print("Creating the crew...")
 crew = Crew(
-    agents=[Questions_crawler, Answer_crawler, Get_example_data],
-    tasks=[Questions_crawler_task, Answer_crawler_task, Get_example_data],
+    agents=[Data_Loader, Questions_Crawler, Answer_Crawler, Data_Formatter],
+    tasks=[Load_Example_Data, Question_Crawl, Answer_Crawl, Format_Data],
     process=Process.sequential,
     full_output=True,
     max_rpm=30,
