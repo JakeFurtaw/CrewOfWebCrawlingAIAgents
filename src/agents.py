@@ -1,29 +1,30 @@
 from crewai import Agent
 from crewai_tools import WebsiteSearchTool, FileReadTool
-from langchain_community.llms import HuggingFaceHub
-from main import website_link
+import torch
+from transformers import AutoModelForCausalLM
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from utils import get_website_link
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
-llm = HuggingFaceHub(
-    repo_id = "meta-llama/Meta-Llama-3-8B",
-    huggingfacehub_api_key = HUGGINGFACE_API_KEY,
-    task = "web-crawling"
-)
-embedder = HuggingFaceHub(
-    repo_id = "BAAI/bge-large-en-v1.5",
-    huggingfacehub_api_key = HUGGINGFACE_API_KEY
-)
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+llm = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", device_map = "auto")
+embedder = HuggingFaceEmbeddings(api_key=HUGGINGFACE_API_KEY)
 
 # ------Define the tools that will be used in the project---------
-search_tool = WebsiteSearchTool( website= website_link,
+search_tool = WebsiteSearchTool( website=get_website_link(),
     config = dict(
         llm = llm(temperature = 0.9, max_new_tokens = 256),
         embedder = embedder
     )
 )
 input_data = FileReadTool("./Data/input.txt")
+questions_data = FileReadTool("./Data/questions.txt")
+answers_data = FileReadTool("./Data/answers.txt")
 output_data = FileReadTool("./Data/output.txt")
 
 # ------Define the agents that will be used in the project------
@@ -60,7 +61,7 @@ class Agents():
         locations, fraternity and sorority information, club information, teacher and faculty information.
         """,
         verbose = True,
-        tools = [search_tool],
+        tools = [search_tool, questions_data],
         allow_delegation = False,
     )
 
@@ -73,7 +74,7 @@ class Agents():
         locations, fraternity and sorority information, club information, teacher and faculty information.
         """,
         verbose = True,
-        tools = [search_tool],
+        tools = [search_tool, answers_data],
         allow_delegation = False,
     )
 

@@ -2,18 +2,16 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from agents import Data_Loader, Questions_Crawler, Answer_Crawler, Data_Formatter, Manager
 from tasks import Load_Example_Data, Load_Data, Question_Crawl, Answer_Crawl, Format_Output_Data, Manager_Agents
-from langchain_community.llms import HuggingFaceHub
+from transformers import AutoModelForCausalLM
 from dotenv import load_dotenv
 import os
+import torch
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 load_dotenv()
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
-
-llm = HuggingFaceHub(
-    repo_id = "meta-llama/Meta-Llama-3-8B",
-    huggingfacehub_api_key = HUGGINGFACE_API_KEY,
-    task = "text-generation"
-)
+llm = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", device_map = "auto")
 
 @CrewBase
 class WebCrawlingCrew():
