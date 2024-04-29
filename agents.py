@@ -43,18 +43,6 @@ class Agents():
         allow_delegation = False,
     )
 
-    # Question_crawler2 = Agent(
-    #     name = "Webcrawler Two",
-    #     role = "Senior Research Analyst",
-    #     backstory = """You are an agent that specializes in crawling college websites and coming up with questions that new and existing students would 
-    #     have about the school. You are tasked with crawling the website and coming up with questions that new and existing students would have about the school.
-    #     """,
-    #     goal="To crawl the provided website and come up with questions that students would have about the school.",
-    #     verbose = True,
-    #     tools = [serper_tool, search_tool],
-    #     allow_delegation = False,
-    # )
-
     Answer_crawler = Agent(
         name = "Webcrawler",
         role = "Senior Research Analyst",
@@ -65,13 +53,6 @@ class Agents():
         tools = [serper_tool, search_tool],
         allow_delegation = False,
     )
-
-    # Answer_crawler2 = Agent(
-    #     name = "Webcrawler2",
-    #     role = "Senior Research Analyst",
-    #     description = "Agent that is used to crawl a website and come up with questions that students would have about the school.",
-    #     tools = ["webcrawler"],
-    # )
 
     Data_formatter = Agent(
         name = "Data Formatter",
