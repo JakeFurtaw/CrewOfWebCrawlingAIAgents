@@ -15,6 +15,12 @@ class Tasks(website_link):
         expected_output = "Example data that can be used to test the project.",
         agent = Data_Loader
     )
+
+    Load_Data = Task(
+        description = "Load the data that was collected by the Question_Crawler so the Answer_Crawler can find the answers to the questions.",
+        expected_output = "The data that was collected by the data loader agent.",
+        agent = Data_Loader
+    )
     
     Question_Crawl = Task(
         description = """Crawl the provided website {website_link} and all of its sublinks to come up with questions that students would have about the school.
@@ -30,7 +36,7 @@ class Tasks(website_link):
         agent = Answer_Crawler
     )
 
-    Format_Data = Task(
+    Format_Output_Data = Task(
         description = """Format the data that was collected by the question and answer crawler agents so that it can be used to create a datset to finetune a model.
         Format it so that you have a Question on one line and the answer on the next line.
         """,
