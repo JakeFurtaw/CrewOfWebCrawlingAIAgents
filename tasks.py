@@ -11,7 +11,7 @@ class Tasks():
     )
 
     Get_example_data = Task(
-        description = "Read files and directories to get example data that can be used to test the project.",
+        description = "Read files and directories to get example data that can be used to provide the agents with the kind of data they are looking to complete the project.",
         expected_output = "Example data that can be used to test the project.",
         agent = Get_example_data
     )
