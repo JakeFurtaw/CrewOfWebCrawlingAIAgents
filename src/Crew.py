@@ -58,7 +58,7 @@ class DataCrawlingCrew():
     @task
     def QA_Crawl(self) -> Task:
         return Task(
-            config = QA_Crawler,
+            config = QA_Crawl,
             agent = self.QA_Crawler()
         )
     @task
