@@ -20,7 +20,7 @@ class WebCrawlingCrew():
     def __init__(self) -> None:
         self.llm = llm(temperature = 0.9,
                        max_new_tokens = 256
-    )
+                    )
     #Agents for the project.
     @agent
     def Data_Loader(self) -> Agent:
