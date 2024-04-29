@@ -16,9 +16,9 @@ llm = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", device_
 @CrewBase
 class WebCrawlingCrew():
     def __init__(self) -> None:
-        self.llm = llm(temperature = 0.9,
-                       max_new_tokens = 256
-                    )
+        self.llm = llm()
+        
+
     #Agents for the project.
     @agent
     def Data_Loader(self) -> Agent:
